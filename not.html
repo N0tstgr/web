@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EnviroHealth</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .hero {
+      background: linear-gradient(to right, #10b981, #059669);
+      padding: 100px 20px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .subtext {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn.primary {
+      background-color: #ffffff;
+      color: #059669;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .btn.primary:hover {
+      background-color: #e5e7eb;
+    }
+
+    .btn.secondary {
+      border: 2px solid #fff;
+      color: #fff;
+    }
+
+    .btn.secondary:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .learn-section {
+      padding: 80px 20px;
+      text-align: center;
+      background: #f9fafb;
+      color: #1f2937;
+    }
+
+    .learn-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .learn-section p {
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Optional smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Smart Environment, Safer You</h1>
+      <p class="subtext">
+        Real-time environmental monitoring for Greater Noida to predict health risks and suggest safety measures.
+      </p>
+      <div class="buttons">
+        <a href="#get-started" class="btn primary">Get Started</a>
+        <a href="#learn-more" class="btn secondary">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Learn More Section -->
+  <section id="learn-more" class="learn-section">
+    <h2>How It Works</h2>
+    <p>
+      Our system collects real-time air quality and environmental data to calculate your personalized health risk score.
+      Based on this, we provide actionable safety suggestions tailored to your location and condition.
+    </p>
+  </section>
+
+</body>
+</html>

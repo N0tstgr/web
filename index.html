@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EnviroHealth – Smart Environment, Safer You</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+  <header>
+    <h1>EnviroHealth – Smart Environment, Safer You</h1>
+    <p>A web platform for real-time environmental data and personalized health insights in Greater Noida</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li class="dropdown">
+        <span class="dropdown-btn">Who We Are</span>
+        <div class="dropdown-content">
+          <a href="#whatWeDo">What We Do</a>
+          <a href="#whereWeWork">Where We Work</a>
+          <a href="#howWeWork">How We Work</a>
+          <a href="#workWithUs">Work With Us</a>
+        </div>
+      </li>
+      <li><a href="#aboutUs">About Us</a></li>
+      <li><a href="#services">Services</a></li>
+      <li class="dropdown">
+        <span class="dropdown-btn">More</span>
+        <div class="dropdown-content">
+          <a href="#testimonial">Testimonial</a>
+          <a href="#reviews">Reviews</a>
+        </div>
+      </li>
+      <li class="right"><a href="#" onclick="openModal('loginModal')">Login</a></li>
+      <li class="right"><a href="#" onclick="openModal('signupModal')">Signup</a></li>
+      
+    </ul>
+  </nav>
+<div>
+  <video controls autoplay loop width="100%; height:auto;">
+    <source src="ps.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+
+
+  
+</div>
+
+  <section id="aboutUs">
+    <h2>About Us</h2>
+    <p>EnviroHealth is a student-led initiative aimed at leveraging technology to promote environmental health awareness and safety in urban communities.</p>
+  </section>
+
+  <section id="services">
+    <h2>Services</h2>
+    <p>We offer real-time dashboards, personalized health alerts, preventive suggestions, and community health reports for users and officials.</p>
+  </section>
+
+  <section id="testimonial">
+    <h2>Testimonial</h2>
+    <p>“EnviroHealth helped me realize my water filter wasn’t effective. It literally changed my family's health!” – Local Resident, GN</p>
+  </section>
+
+  <section id="reviews">
+    <h2>Reviews</h2>
+    <p>⭐️⭐️⭐️⭐️⭐️ “Excellent initiative for urban health” <br> ⭐️⭐️⭐️⭐️ “Informative and easy to use app”</p>
+  </section>
+
+  
+  <script src="javascript.js"></script>
+  <section id="login">
+    <h2>Login</h2>
+    <form action="login-action.php" method="POST">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      
+      <button type="submit">Login</button>
+    </form>
+  </section>
+  
+  <section id="signup">
+    <h2>Signup</h2>
+    <form action="signup-action.php" method="POST">
+      <label for="new-username">Username:</label>
+      <input type="text" id="new-username" name="new-username" placeholder="Create a username" required>
+      
+      <label for="new-email">Email:</label>
+      <input type="email" id="new-email" name="new-email" placeholder="Enter your email" required>
+      
+      <label for="new-password">Password:</label>
+      <input type="password" id="new-password" name="new-password" placeholder="Create a password" required>
+      
+      <button type="submit">Sign Up</button>
+    </form>
+  </section>
+  <!-- Login Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('loginModal')">&times;</span>
+      <h2>Login</h2>
+      <form>
+        <input type="text" placeholder="Enter Username" required><br>
+        <input type="password" placeholder="Enter Password" required><br>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Signup Modal -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('signupModal')">&times;</span>
+      <h2>Signup</h2>
+      <form>
+        <input type="text" placeholder="Create Username" required><br>
+        <input type="email" placeholder="Enter Email" required><br>
+        <input type="password" placeholder="Create Password" required><br>
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+  
+
+</body>
+</html>
