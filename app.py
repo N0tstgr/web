@@ -10,3 +10,7 @@ def home():
 def login():
     username = request.form.get("username")
     password = request.form.get("password")
+
+    if username == "Not" and password=="N0t":
+        return render_template("welcome.html" ,name = username)
+
