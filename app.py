@@ -3,14 +3,16 @@ from flask import Flask , render_template,request
 app = Flask(__name__)
 
 @app.route("/")
-def home():
-    return render_template("home.html")
+def login():
+    return render_template("login.html")
 
 @app.route("/submit", methods=["POST"])
-def login():
+def submit():
     username = request.form.get("username")
     password = request.form.get("password")
 
-    if username == "Not" and password=="N0t":
+    if username == "Not" and password=="Noot":
         return render_template("welcome.html" ,name = username)
+    else:
+        return "Invalid Credentials"
 
