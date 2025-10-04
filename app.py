@@ -11,7 +11,7 @@ def submit():
     username = request.form.get("username")
     password = request.form.get("password")
 
-    if username == "Not" and password=="Noot":
+    if username == "yes" and password=="hi":
         return render_template("welcome.html" ,name = username)
     else:
         return "Invalid Credentials"
