@@ -20,7 +20,7 @@ def submit():
         'zuxxy':"340"
     }
 
-    if username is valid_users and password==valid_users[username]:
+    if username in valid_users and password==valid_users[username]:
         return render_template("welcome.html", name=username)
     else:
         return "Invalid Credentials"
