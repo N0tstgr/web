@@ -2,3 +2,23 @@ FORMS
 1- name
 2- methods defining
 3- make sure match
+
+-------------------------------
+JINJA 2
+1- python values
+{{variable}}
+
+{{name}}
+<p>welcome {{name}}</p>
+
+
+2- conditionals
+
+{% if  is_goodlearner % }
+<p> you are a good learner</p>
+
+
+
+{% else %}
+<p> you have to improve yourself to become a great learner and explore your path</p>
+{% endif %}
