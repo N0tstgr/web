@@ -11,21 +11,17 @@
     <h1> Hello {{name}} </h1>
     {% if is_topper %}
     <p> You are a topper  don't let the ego take down you, make it habit</p>
-    (%else%)
+    {% else %}
     <p> you have to identify where is the field and improve it radically and do not give up do not be negative </p>
-    (% endif %)
+    {% endif %}
 
     <h3> your subjects</h3>
 
     <ul>
-        (% for subjects in subjects %)
-        <li> Electronics devices</li>
-        <li> Digital system design </li>
-        <li> CyberSecurity</li>
-        <li> Universal Human values</li>
-        <li> Network analysis and Synthesis</li>
-        <li> Database management System</li>
-        (% endfor %)
+        {% for subjects in subjects %}
+        <li> {{subjects}}</li>
+        
+        {% endfor %}
     </ul>
 </body>
 </html>
