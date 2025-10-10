@@ -14,4 +14,8 @@ def about():
 def Login():
     return render_template("Login.html")
 
+@app.route("/Product.html")
+def Product():
+    return render_template("Product.html")
+
    
