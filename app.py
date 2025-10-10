@@ -10,4 +10,8 @@ def home():
 def about():
     return render_template("about.html")
 
+@app.route("/Login")
+def Login():
+    return render_template("Login.html")
+
    
