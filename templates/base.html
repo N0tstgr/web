@@ -3,22 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block  content %} Vikash's Web {% endblock %}</title>
+    <title>{% block title %} My Website {% endblock %}</title>
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif; padding: 30px;}
+        header {background: #333; color: white; padding: 15px;}
+        footer {background: yellow; padding: 15px; margin-top: 25px;}
+    </style>
+
+
 </head>
 <body>
     
+<header>
+    <h2>My Site</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href=""
+    </nav>
+</header>
+{% block content %}
+{% endblock %}
 
-    <header>...</header>
-
-
-    {% block  content %}
-
-    <!--   -->
- {% endblock %}
-
- <footer></footer>
-
+<footer>
+    <p>@2025 Vikash is billionaire at the age of 21</p>
+</footer>
 </body>
 </html>
-
-
