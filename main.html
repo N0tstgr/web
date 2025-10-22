@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vijay Fertilizer Shop</title>
+  <meta name="description" content="Vijay - Fertilizer Shop (HTML + JS)" />
+  <style>
+    :root{
+      --bg:#f7fafc;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent:#16a34a;
+      --accent-600:#15803d;
+      --radius:12px;
+      --container:1100px;
+      --shadow: 0 8px 24px rgba(2,6,23,0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#f7f9fb 0%,#fff 100%);color:#0f172a;min-height:100vh}
+    .container{max-width:var(--container);margin:0 auto;padding:20px}
+    header{background:var(--card);padding:18px;border-radius:14px;margin:18px 0;display:flex;gap:16px;align-items:center;box-shadow:var(--shadow)}
+    .brand{display:flex;flex-direction:column}
+    .brand h1{margin:0;font-size:22px;color:var(--accent);letter-spacing:0.4px}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+    .searchWrap{flex:1;display:flex;gap:8px;align-items:center}
+    .searchWrap input, .searchWrap select{padding:10px 12px;border-radius:10px;border:1px solid #e6e9ee;outline:none;font-size:14px}
+    .searchWrap input:focus{box-shadow:0 0 0 3px rgba(22,163,74,0.08);border-color:var(--accent-600)}
+    .actions{display:flex;gap:8px;align-items:center}
+    .btn{background:var(--accent);color:white;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
+    .btn.alt{background:transparent;color:var(--accent);border:1px solid rgba(22,163,74,0.12)}
+    main{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
+    .catalog{background:transparent}
+    .controls{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    .card{background:var(--card);border-radius:14px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+    .card img{max-height:120px;object-fit:contain;width:100%}
+    .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .price{font-weight:700;color:var(--accent-600)}
+    .category{font-size:12px;color:var(--muted)}
+    .desc{font-size:13px;color:#111827;flex:1}
+    .footer{padding:14px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfffb);display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .cartPanel{background:var(--card);border-radius:14px;padding:14px;box-shadow:var(--shadow);height:fit-content;position:sticky;top:20px}
+    .cartList{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+    .cartItem{display:flex;gap:10px;align-items:center}
+    .cartItem img{width:56px;height:56px;object-fit:contain;border-radius:8px}
+    .qtyBtns button{padding:6px 8px;border-radius:8px;border:1px solid #e5e7eb;background:transparent;cursor:pointer}
+    .totalRow{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-weight:700}
+    .modal, .drawer{position:fixed;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;z-index:60}
+    .modalBackdrop{position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(2,6,23,0.45)}
+    .modalContent{position:relative;background:var(--card);border-radius:14px;padding:18px;z-index:62;max-width:920px;width:95%;max-height:86vh;overflow:auto;box-shadow:var(--shadow)}
+    .productHero{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .productHero img{width:100%;height:320px;object-fit:contain;border-radius:10px}
+    .checkoutForm{display:flex;flex-direction:column;gap:8px}
+    .input{padding:10px;border-radius:10px;border:1px solid #e6e9ee}
+    footer.sitefoot{text-align:center;padding:18px;color:var(--muted);font-size:13px;margin-top:28px}
+    @media (max-width:940px){
+      main{grid-template-columns:1fr;gap:12px}
+      .productHero{grid-template-columns:1fr}
+      .cartPanel{position:static}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1>Vijay</h1>
+        <p>Fertilizer Shop — Quality for better yield</p>
+      </div>
+
+      <div class="searchWrap" style="margin-left:10px">
+        <input id="searchInput" placeholder="Search fertilizers, e.g. NPK, Urea, Compost" aria-label="Search" />
+        <select id="categoryFilter" title="Filter category">
+          <option value="">All Categories</option>
+          <option value="NPK">NPK</option>
+          <option value="Nitrogen">Nitrogen</option>
+          <option value="Micronutrients">Micronutrients</option>
+          <option value="Organic">Organic</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button class="btn alt" id="clearStorageBtn">Clear data</button>
+        <button class="btn" id="openCartBtn">Cart (<span id="cartCount">0</span>)</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="catalog">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <h2 style="margin:0">Shop Fertilizers</h2>
+          <div style="color:var(--muted);font-size:13px">Sourced responsibly • Fast deliveries</div>
+        </div>
+
+        <div class="controls">
+          <input id="minPrice" class="input" placeholder="Min price" style="width:120px" />
+          <input id="maxPrice" class="input" placeholder="Max price" style="width:120px" />
+          <button class="btn alt" id="applyFilterBtn">Apply</button>
+          <button class="btn alt" id="resetFilterBtn">Reset</button>
+        </div>
+
+        <div id="productGrid" class="grid" aria-live="polite">
+          <!-- product cards injected here -->
+        </div>
+
+      </section>
+
+      <aside class="cartPanel" aria-labelledby="cartTitle">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <h3 id="cartTitle" style="margin:0">Your Cart</h3>
+            <div style="font-size:13px;color:var(--muted)">Local cart — stored on your browser</div>
+          </div>
+          <button id="checkoutBtn" class="btn" style="padding:8px 10px">Checkout</button>
+        </div>
+
+        <div id="cartList" class="cartList" style="margin-top:12px">
+          <!-- cart items -->
+        </div>
+
+        <div class="totalRow">
+          <div style="font-size:14px;color:var(--muted)">Subtotal</div>
+          <div id="cartTotal">₹0</div>
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="btn alt" id="clearCartBtn">Clear Cart</button>
+          <button class="btn" id="continueShoppingBtn">Continue</button>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="sitefoot">© <span id="year"></span> Vijay Fertilizer Shop — Built with ❤️</footer>
+  </div>
+
+  <!-- Modal: Product details & checkout drawer -->
+  <div id="modalRoot" style="display:none" class="modal" aria-hidden="true">
+    <div class="modalBackdrop" id="modalBackdrop"></div>
+    <div class="modalContent" role="dialog" aria-modal="true">
+      <div id="modalInner">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ======== Data ========
+    const products = [
+      { id:'p001', name:'SuperGrow NPK 20-20-20', price:499, image:'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=09b6b2e3c1b7f0b1f7dbc42b1f2a3d7b', category:'NPK', description:'Balanced NPK fertilizer for general crop health and improved yield.' },
+      { id:'p002', name:'NitroBoost Urea 46%', price:599, image:'https://images.unsplash.com/photo-1573497019411-7b4c2d1f28ff?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=4e9b9f0e8c34f2b3d7d8c6c7b1e4b7ef', category:'Nitrogen', description:'High nitrogen urea for strong vegetative growth and quick response.' },
+      { id:'p003', name:'MicroMax - Trace Mix', price:299, image:'https://images.unsplash.com/photo-1542736667-069246bdbc75?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=3c7f9e6a7f8b4e3c0a1d9b4b7bf2d2e8', category:'Micronutrients', description:'Trace element blend (Fe, Zn, Mn, Cu, B) to correct deficiencies.' },
+      { id:'p004', name:'Organic Compost 10kg', price:249, image:'https://images.unsplash.com/photo-1524594154908-cc2c3d7f0fba?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=1b2b8df5b6a9f8b9c4d1e9c2d3f8b7c9', category:'Organic', description:'Rich organic compost to improve soil structure and water retention.' },
+      { id:'p005', name:'PhosphatePlus 12%', price:529, image:'https://images.unsplash.com/photo-1518972559570-7cc1309f17a8?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=2a7d3c75d9e2b5d8f0a1e9b3c6d4e5f6', category:'NPK', description:'Phosphorus enriched fertilizer for root development and flowering.' }
+    ];
+
+    // ======== Utilities & state ========
+    const el = id => document.getElementById(id);
+    const saveCartToStorage = cart => localStorage.setItem('vijay_cart', JSON.stringify(cart));
+    const loadCartFromStorage = () => {
+      try { return JSON.parse(localStorage.getItem('vijay_cart')||'[]') } catch(e) { return [] }
+    };
+
+    // initial render
+    el('year').textContent = new Date().getFullYear();
+
+    // ======== Product rendering ========
+    function renderProducts(list = products) {
+      const grid = el('productGrid');
+      grid.innerHTML = '';
+      if(!list.length){
+        grid.innerHTML = '<div style="color:var(--muted)">No products found.</div>';
+        return;
+      }
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div style="display:flex;flex-direction:column;height:100%">
+            <div style="height:140px;display:flex;align-items:center;justify-content:center;margin-bottom:6px">
+              <img src="${p.image}" alt="${escapeHtml(p.name)}" />
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-weight:700">${escapeHtml(p.name)}</div>
+                <div class="category">${escapeHtml(p.category)}</div>
+              </div>
+              <div class="price">₹${p.price}</div>
+            </div>
+            <div class="desc" style="margin-top:8px">${escapeHtml(p.description)}</div>
+            <div class="footer" style="margin-top:10px">
+              <div style="font-weight:700">₹${p.price}</div>
+              <div style="display:flex;gap:8px">
+                <button class="btn alt" data-action="details" data-id="${p.id}" style="padding:8px 10px">Details</button>
+                <button class="btn" data-action="add" data-id="${p.id}" style="padding:8px 10px">Add</button>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])) }
+
+    // ======== Cart functions (camelCase) ========
+    function getCart(){ return loadCartFromStorage(); }
+    function setCart(next){ saveCartToStorage(next); renderCart(); updateCartCount(); }
+    function addToCartById(id){
+      const p = products.find(x=>x.id===id);
+      if(!p) return;
+      const cur = getCart();
+      const found = cur.find(i=>i.id===id);
+      if(found) found.qty++;
+      else cur.push({...p, qty:1});
+      setCart(cur);
+      toast('Added to cart');
+    }
+    function changeQty(id, delta){
+      const cur = getCart();
+      const next = cur.map(i => i.id===id ? {...i, qty: Math.max(1, i.qty + delta)} : i).filter(i=>i.qty>0);
+      setCart(next);
+    }
+    function removeFromCart(id){
+      const cur = getCart().filter(i=>i.id!==id);
+      setCart(cur);
+    }
+    function clearCart(){
+      localStorage.removeItem('vijay_cart'); renderCart(); updateCartCount(); toast('Cart cleared');
+    }
+    function cartTotal(){
+      return getCart().reduce((s,i)=> s + (i.price*i.qty), 0);
+    }
+
+    // ======== Rendering cart UI ========
+    function renderCart(){
+      const list = el('cartList');
+      const cart = getCart();
+      list.innerHTML = '';
+      if(cart.length === 0){
+        list.innerHTML = '<div style="color:var(--muted)">Your cart is empty. Add items to get started.</div>';
+        el('cartTotal').textContent = '₹0';
+        return;
+      }
+      cart.forEach(item => {
+        const node = document.createElement('div');
+        node.className = 'cartItem';
+        node.innerHTML = `
+          <img src="${item.image}" alt="${escapeHtml(item.name)}" />
+          <div style="flex:1">
+            <div style="font-weight:700">${escapeHtml(item.name)}</div>
+            <div style="font-size:13px;color:var(--muted)">₹${item.price} × ${item.qty}</div>
+            <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
+              <div class="qtyBtns">
+                <button data-action="dec" data-id="${item.id}">-</button>
+                <span style="padding:6px 10px;background:#f3f4f6;border-radius:8px;margin:0 6px">${item.qty}</span>
+                <button data-action="inc" data-id="${item.id}">+</button>
+              </div>
+              <button data-action="remove" data-id="${item.id}" style="margin-left:8px;color:#dc2626;border:none;background:transparent;cursor:pointer">Remove</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(node);
+      });
+      el('cartTotal').textContent = '₹' + cartTotal();
+    }
+
+    function updateCartCount(){
+      const count = getCart().reduce((s,i)=> s + i.qty, 0);
+      el('cartCount').textContent = count;
+    }
+
+    // ======== Event delegation: product grid & cart ========
+    document.addEventListener('click', e => {
+      const target = e.target;
+      if(target.dataset && target.dataset.action){
+        const action = target.dataset.action;
+        const id = target.dataset.id;
+        if(action === 'add') addToCartById(id);
+        if(action === 'details') openProductModal(id);
+        if(action === 'dec') changeQty(id, -1);
+        if(action === 'inc') changeQty(id, +1);
+        if(action === 'remove') removeFromCart(id);
+      }
+    });
+
+    // Cart panel actions
+    el('openCartBtn').addEventListener('click', () => {
+      // scroll to cart panel on mobile or focus on cart area
+      document.querySelector('.cartPanel').scrollIntoView({behavior:'smooth'});
+    });
+    el('clearCartBtn').addEventListener('click', () => { clearCart(); });
+    el('continueShoppingBtn').addEventListener('click', () => { window.scrollTo({top:0,behavior:'smooth'}) });
+
+    // filters & search
+    el('searchInput').addEventListener('input', () => applyFilters());
+    el('categoryFilter').addEventListener('change', () => applyFilters());
+    el('applyFilterBtn').addEventListener('click', applyFilters);
+    el('resetFilterBtn').addEventListener('click', () => {
+      el('searchInput').value = '';
+      el('categoryFilter').value = '';
+      el('minPrice').value = '';
+      el('maxPrice').value = '';
+      renderProducts();
+    });
+    el('clearStorageBtn').addEventListener('click', ()=>{ localStorage.clear(); renderCart(); updateCartCount(); toast('Local storage cleared') });
+
+    function applyFilters(){
+      const q = el('searchInput').value.trim().toLowerCase();
+      const cat = el('categoryFilter').value;
+      const min = parseFloat(el('minPrice').value) || 0;
+      const max = parseFloat(el('maxPrice').value) || Infinity;
+      let filtered = products.filter(p => {
+        const matchesQuery = p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
+        const matchesCat = cat ? p.category === cat : true;
+        const matchesPrice = p.price >= min && p.price <= max;
+        return matchesQuery && matchesCat && matchesPrice;
+      });
+      renderProducts(filtered);
+    }
+
+    // ======== Product modal & checkout ========
+    function openModal(html){
+      const root = el('modalRoot');
+      el('modalInner').innerHTML = html;
+      root.style.display = 'flex';
+      root.setAttribute('aria-hidden','false');
+    }
+    function closeModal(){
+      const root = el('modalRoot');
+      root.style.display = 'none';
+      root.setAttribute('aria-hidden','true');
+      el('modalInner').innerHTML = '';
+    }
+    el('modalBackdrop').addEventListener('click', closeModal);
+
+    function openProductModal(id){
+      const p = products.find(x=>x.id===id);
+      if(!p) return;
+      const html = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <h2 style="margin:0">${escapeHtml(p.name)}</h2>
+          <button id="closeModalBtn" style="border:none;background:transparent;font-weight:700;cursor:pointer">✕</button>
+        </div>
+        <div class="productHero">
+          <div style="display:flex;align-items:center;justify-content:center;background:#fbfffb;border-radius:10px;padding:12px"><img src="${p.image}" alt="${escapeHtml(p.name)}" /></div>
+          <div>
+            <div style="color:var(--muted);font-size:13px">${escapeHtml(p.category)}</div>
+            <div style="font-size:20px;font-weight:800;margin-top:8px">₹${p.price}</div>
+            <p style="margin-top:12px">${escapeHtml(p.description)}</p>
+            <div style="margin-top:16px;display:flex;gap:8px">
+              <button class="btn" id="modalAddBtn">Add to cart</button>
+              <button class="btn alt" id="modalBuyBtn">Buy now</button>
+            </div>
+            <div style="margin-top:16px;color:var(--muted);font-size:13px">SKU: ${p.id}</div>
+          </div>
+        </div>
+      `;
+      openModal(html);
+
+      document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+      document.getElementById('modalAddBtn').addEventListener('click', () => { addToCartById(id); });
+      document.getElementById('modalBuyBtn').addEventListener('click', () => { openCheckoutModal(id); });
+    }
+
+    function openCheckoutModal(productId = null){
+      const cart = getCart();
+      const useProduct = productId ? products.find(p=>p.id===productId) : null;
+
+      const items = (useProduct ? [{...useProduct, qty:1}] : cart);
+      if(items.length === 0){
+        toast('Your cart is empty');
+        return;
+      }
+
+      const itemsHtml = items.map(it => `
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px">
+          <img src="${it.image}" style="width:70px;height:70px;object-fit:contain;border-radius:8px" />
+          <div style="flex:1">
+            <div style="font-weight:700">${escapeHtml(it.name)}</div>
+            <div style="color:var(--muted);font-size:13px">₹${it.price} × ${it.qty}</div>
+          </div>
+          <div style="font-weight:700">₹${it.price * it.qty}</div>
+        </div>
+      `).join('');
+
+      const sub = items.reduce((s,i)=> s + i.price * i.qty, 0);
+
+      const html = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <h2 style="margin:0">Checkout</h2>
+          <button id="checkoutCloseBtn" style="border:none;background:transparent;font-weight:700;cursor:pointer">✕</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 360px;gap:14px">
+          <div>
+            <h3 style="margin-top:0">Order summary</h3>
+            ${itemsHtml}
+            <div style="border-top:1px dashed #e6e9ee;padding-top:10px;margin-top:8px">
+              <div style="display:flex;justify-content:space-between"><div style="color:var(--muted)">Subtotal</div><div style="font-weight:700">₹${sub}</div></div>
+            </div>
+          </div>
+          <div style="background:#fff;padding:12px;border-radius:10px;box-shadow:var(--shadow)">
+            <h3 style="margin-top:0">Shipping & payment</h3>
+            <form id="checkoutForm" class="checkoutForm">
+              <input class="input" name="name" placeholder="Full name" required />
+              <input class="input" name="phone" placeholder="Phone" required />
+              <input class="input" name="address" placeholder="Delivery address" required />
+              <select class="input" name="payment" required>
+                <option value="cod">Cash on delivery</option>
+                <option value="upi">UPI (mock)</option>
+                <option value="card">Card (mock)</option>
+              </select>
+              <button type="submit" class="btn" style="margin-top:8px">Place order • ₹${sub}</button>
+            </form>
+          </div>
+        </div>
+      `;
+      openModal(html);
+
+      document.getElementById('checkoutCloseBtn').addEventListener('click', closeModal);
+      document.getElementById('checkoutForm').addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        const form = ev.target;
+        const data = Object.fromEntries(new FormData(form).entries());
+        // For this demo we mock a success flow:
+        closeModal();
+        if(!productId){
+          // clear cart only when checkout was from cart
+          clearCart();
+        }
+        toast('Order placed — we will contact you soon');
+        console.log('Order data (mock):', { items, total: sub, customer: data });
+      });
+    }
+
+    // ======== small toast ========
+    function toast(msg){
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.position = 'fixed';
+      t.style.right = '20px';
+      t.style.bottom = '20px';
+      t.style.padding = '10px 14px';
+      t.style.background = 'rgba(2,6,23,0.9)';
+      t.style.color = 'white';
+      t.style.borderRadius = '8px';
+      t.style.zIndex = 9999;
+      t.style.boxShadow = '0 6px 18px rgba(2,6,23,0.12)';
+      document.body.appendChild(t);
+      setTimeout(()=> t.style.opacity = '0.02', 2200);
+      setTimeout(()=> t.remove(), 2600);
+    }
+
+    // ======== keyboard shortcuts ========
+    window.addEventListener('keydown', e => {
+      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+        e.preventDefault(); el('searchInput').focus();
+      }
+      if(e.key === 'Escape') closeModal();
+    });
+
+    // ======== init ========
+    renderProducts();
+    renderCart();
+    updateCartCount();
+
+    // checkout button in cart panel
+    el('checkoutBtn').addEventListener('click', () => { openCheckoutModal(null) });
+
+    // small accessibility: click Add/Details if pressing Enter on focused card buttons
+    document.addEventListener('keypress', e => {
+      if(e.key === 'Enter' && document.activeElement && document.activeElement.dataset && document.activeElement.dataset.action){
+        document.activeElement.click();
+      }
+    });
+
+  </script>
+</body>
+</html>

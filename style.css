@@ -242,7 +242,7 @@ body {
       /* --- FORM STYLES INSIDE MODALS --- */
       .modal-content input {
         width: 90%;
-        padding: 10px;
+        padding: 9px;
         margin: 8px 0;
         border: 1px solid #ccc;
         border-radius: 5px;
